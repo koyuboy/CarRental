@@ -10,8 +10,13 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            TestCarDetails();
 
+
+           
+
+            /*
+            CarManager carManager = new CarManager(new EfCarDal());
             Console.WriteLine("==============================================List of Same Brands==============================================");
             foreach (var car in carManager.GetCarsByBrandId(2))
             {
@@ -26,7 +31,7 @@ namespace ConsoleUI
             carManager.Add(new Car { BrandId = 1, ColorId = 3, ModelYear = "2017", DailyPrice = 0, Description = "manuel" });
 
 
-            /*
+            
             Console.WriteLine("==============================================List of All Cars==============================================");
             foreach (var car in carManager.GetAll())
             {
@@ -34,14 +39,14 @@ namespace ConsoleUI
             }
             
             Console.WriteLine("==============================================Call by Id==============================================");
-            Car tempCar = carManager.GetByCarId(6);
+            Car tempCar = carManager.GetById(6);
             Console.WriteLine("Car with id 6:\n"+ "ID: " + tempCar.CarId + " BrandId: " + tempCar.BrandId + " ColorId: " + tempCar.ColorId + " ModelYear: " + tempCar.ModelYear + " DailyPrice: " + tempCar.DailyPrice + " Description: " + tempCar.Description);
             
             Console.WriteLine("==============================================Add Car==============================================");
             carManager.Add(new Car { BrandId = 1, ColorId = 3, ModelYear = "2017", DailyPrice = 0, Description = "manuel" });
 
             Console.WriteLine("==============================================Update  Car==============================================");
-            carManager.Update(new Car { CarId = 9, BrandId = 4, ColorId = 2, ModelYear = "2017", DailyPrice = 450, Description = "painted" });
+            carManager.Update(new Car { CarId = 9, BrandId = 3, ColorId = 2, ModelYear = "2017", DailyPrice = 450, Description = "painted" });
             foreach (var car in carManager.GetAll())
             {
                 Console.WriteLine("ID: " + car.CarId + " BrandId: " + car.BrandId + " ColorId: " + car.ColorId + " ModelYear: " + car.ModelYear + " DailyPrice: " + car.DailyPrice + " Description: " + car.Description);
@@ -49,6 +54,34 @@ namespace ConsoleUI
 
             Console.WriteLine("==============================================Delete Car==============================================");
             carManager.Delete(12);
+            */
+
+
+        }
+
+        private static void TestCarDetails()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetCarDetails();
+            if (result.Success == true)
+            {
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine("ID: " + car.CarId + " Brand: " + car.BrandName + " Color: " + car.ColorName + " ModelYear: " + car.ModelYear + " DailyPrice: " + car.DailyPrice + " Description: " + car.Description);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
+
+            /*
+            foreach (var car in carManager.GetCarDetails().)
+            {
+                Console.WriteLine("ID: " + car.CarId + " Brand: " + car.BrandName + " Color: " + car.ColorName + " ModelYear: " + car.ModelYear + " DailyPrice: " + car.DailyPrice + " Description: " + car.Description);
+            }
             */
 
         }

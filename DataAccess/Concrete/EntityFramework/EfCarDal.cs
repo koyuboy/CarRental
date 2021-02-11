@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,51 +11,29 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, RecapDbContext>, ICarDal
     {
-        public void Add(Car entity)
-        {
-            using (RecapDbContext context = new RecapDbContext()) // bu yapı blok bitince oluşturulan objeyi hafızadan siler
-            {
-                var addedEntity = context.Entry(entity); //referansı yakalar
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (RecapDbContext context = new RecapDbContext()) // bu yapı blok bitince oluşturulan objeyi hafızadan siler
-            {
-                var deletedEntity = context.Entry(id); //referansı yakalar
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
+        public List<CarDetailDto> GetCarDetails()
         {
             using (RecapDbContext context = new RecapDbContext())
             {
-                return context.Set<Car>().SingleOrDefault(filter);
-            }
-        }
+                var result = from c in context.Cars
+                             join b in context.Brands
+                             on c.BrandId equals b.BrandId
+                             join clr in context.Colors
+                             on c.ColorId equals clr.ColorId
+                             select new CarDetailDto
+                             {
+                                 CarId = c.CarId,
+                                 BrandName = b.BrandName,
+                                 ColorName = clr.ColorName,
+                                 DailyPrice = c.DailyPrice,
+                                 Description = c.Description,
+                                 ModelYear = c.ModelYear
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (RecapDbContext context = new RecapDbContext())
-            {
-                return filter == null ? context.Set<Car>().ToList() : context.Set<Car>().Where(filter).ToList(); //select * from products : filtrelenmiş select
-            }
-        }
+                             };
 
-        public void Update(Car entity)
-        {
-            using (RecapDbContext context = new RecapDbContext()) // bu yapı blok bitince oluşturulan objeyi hafızadan siler
-            {
-                var updatedEntity = context.Entry(entity); //referansı yakalar
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
+                return result.ToList();
             }
         }
     }
