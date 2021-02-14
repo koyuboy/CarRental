@@ -10,10 +10,32 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            TestCarDetails();
+            //TestCarDetails();
+
+            //TestRentalDetails();
 
 
-           
+
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            UserManager userManager = new UserManager(new EfUserDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            //returnDAte i null oalrak ekleyemedim
+            rentalManager.Add(new Rental { CarId = 4, CustomerId = 2, RentDate = DateTime.Now});
+
+            
+
+            
+
+
+
+
+            /*
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine(user.FirstName);
+            }
+            */
 
             /*
             CarManager carManager = new CarManager(new EfCarDal());
@@ -68,7 +90,7 @@ namespace ConsoleUI
             {
                 foreach (var car in result.Data)
                 {
-                    Console.WriteLine("ID: " + car.CarId + " Brand: " + car.BrandName + " Color: " + car.ColorName + " ModelYear: " + car.ModelYear + " DailyPrice: " + car.DailyPrice + " Description: " + car.Description);
+                    Console.WriteLine("ID: " + car.CarId + " /Brand: " + car.BrandName + " /Color: " + car.ColorName + " /ModelYear: " + car.ModelYear + " /DailyPrice: " + car.DailyPrice + " /Description: " + car.Description);
                 }
             }
             else
@@ -76,13 +98,25 @@ namespace ConsoleUI
                 Console.WriteLine(result.Message);
             }
 
+        }
 
-            /*
-            foreach (var car in carManager.GetCarDetails().)
+
+        private static void TestRentalDetails()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            var result = rentalManager.GetAllRentalDetails();
+            if (result.Success == true)
             {
-                Console.WriteLine("ID: " + car.CarId + " Brand: " + car.BrandName + " Color: " + car.ColorName + " ModelYear: " + car.ModelYear + " DailyPrice: " + car.DailyPrice + " Description: " + car.Description);
+                foreach (var rental in result.Data)
+                {
+                    Console.WriteLine("RentalId: " + rental.RentalId + "/CarId: "+ rental.CarId +" /Brand: " + rental.BrandName + " /UserName: " + rental.UserName + " /Email: " + rental.UserEmail + " /Company Name: " + rental.CompanyName + " /RentDate: " + rental.RentDate + " /ReturnDate: " + rental.ReturnDate);
+                }
             }
-            */
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
 
         }
     }
