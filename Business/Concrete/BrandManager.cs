@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Business.Concrete
-{
+{ 
     public class BrandManager:IBrandService
     {
         IBrandDal _brandDal;
