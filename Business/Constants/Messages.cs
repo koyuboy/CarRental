@@ -32,5 +32,6 @@ namespace Business.Constants
         public static string CarAlreadyRentedError = "This car already rented";
         public static string RentalUpdateReturnDateError = "This car has already been returned";
         public static string ReturnDateUpdated = "Car successfully returned, (returnDate updated to DateTime.Now)";
+        public static string CarLimitExceeded = "The number of cars is too many";
     }
 }
