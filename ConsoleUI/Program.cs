@@ -81,24 +81,24 @@ namespace ConsoleUI
 
         }
 
-        private static void TestCarDetails()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
+        //private static void TestCarDetails()
+        //{
+        //    CarManager carManager = new CarManager(new EfCarDal());
 
-            var result = carManager.GetCarDetails();
-            if (result.Success == true)
-            {
-                foreach (var car in result.Data)
-                {
-                    Console.WriteLine("ID: " + car.CarId + " /Brand: " + car.BrandName + " /Color: " + car.ColorName + " /ModelYear: " + car.ModelYear + " /DailyPrice: " + car.DailyPrice + " /Description: " + car.Description);
-                }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
+        //    var result = carManager.GetCarDetails();
+        //    if (result.Success == true)
+        //    {
+        //        foreach (var car in result.Data)
+        //        {
+        //            Console.WriteLine("ID: " + car.CarId + " /Brand: " + car.BrandName + " /Color: " + car.ColorName + " /ModelYear: " + car.ModelYear + " /DailyPrice: " + car.DailyPrice + " /Description: " + car.Description);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(result.Message);
+        //    }
 
-        }
+        //}
 
 
         private static void TestRentalDetails()
