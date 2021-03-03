@@ -33,5 +33,10 @@ namespace Business.Constants
         public static string RentalUpdateReturnDateError = "This car has already been returned";
         public static string ReturnDateUpdated = "Car successfully returned, (returnDate updated to DateTime.Now)";
         public static string CarLimitExceeded = "The number of cars is too many";
+        internal static string ImageAdded;
+        internal static string ImageDeleted;
+        internal static string ImageUpdated;
+        internal static string ImagesListed;
+        internal static string CarImageLimitExceeded;
     }
 }
