@@ -17,6 +17,7 @@ namespace Business.Abstract
         IDataResult<List<Car>> GetCarsByBrandId(int brandId);
         IDataResult<List<Car>> GetCarsByColorId(int colorId);
         IDataResult<List<CarDetailDto>> GetCarDetails();
+        IResult AddTransactionalTest(Car car); //içindeki işlem başarılı bitmesse yapılan değişiklikleri geri alan bir metod
 
 
     }

@@ -1,6 +1,10 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -24,7 +28,9 @@ namespace Business.Concrete
             _brandService = brandService;
         }
 
-        [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("car.add,admin")] //yetkilendirme
+        [ValidationAspect(typeof(CarValidator))] //kurallar
+        [CacheRemoveAspect("IProductService.Get")]//IProductService deki bütün Get leri cache den siler
         public IResult Add(Car car)
         {
             IResult result = BusinessRules.Run(CheckIfCarLimitExceeded());
@@ -39,6 +45,22 @@ namespace Business.Concrete
             //return new ErrorResult(Messages.CarDailyPriceInvalid);            
         }
 
+        [TransactionScopeAspect] // metod sona kadar başarılı ile gitmezse yapılan işleri geri alır
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice < 5)
+            {
+                throw new Exception("");
+            }
+
+            Add(car);
+
+            return null;
+
+        }
+
+        [CacheAspect] //cachede varsa cacheden alır, yoksa çalıştırıp cache'e ekler
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
@@ -50,6 +72,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
+        [CacheAspect]
+        [PerformanceAspect(5)]//bu metodun çalışma süresi 5 saniyeyi geçerse beni uyar demek
         public IDataResult<Car> GetById(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(p => p.CarId == id));
@@ -71,6 +95,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Car car)
         {
             
